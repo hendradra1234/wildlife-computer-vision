@@ -1,0 +1,39 @@
+services:
+  api_inference:
+    container_name: api_inference
+    restart: always
+    build:
+        context: ./api_inference
+        dockerfile: Dockerfile
+    volumes:
+      - ./api_inference:/api_inference
+    working_dir: /api_inference
+    ports:
+      - "2000:8001"
+    depends_on:
+      - tf_serving
+    networks:
+      tfserving-network:
+        aliases:
+          - api_inference
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 8001
+
+  tf_serving:
+    image: tensorflow/serving:latest
+    container_name: tf_serving_container
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./saved_model/:/models/wildlife_computer_vision
+      - ./models_config:/models_config
+    environment:
+      - MODEL_NAME=wildlife_computer_vision
+    networks:
+      tfserving-network:
+          aliases:
+            - tf_serving
+    command: >
+      --model_config_file=/models_config/models.config
+      --model_config_file_poll_wait_seconds=60
+networks:
+  tfserving-network:
