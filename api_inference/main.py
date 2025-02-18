@@ -13,23 +13,23 @@ import io
 URL = "http://tf_serving:8501/v1/models/wildlife_computer_vision:predict"
 img_size = (224, 224)
 labels = [
-    "dog",
-    "cat",
-    "cow",
-    "sheep",
-    "spider",
-    "horse",
-    "chicken",
-    "squirrel",
-    "elephant",
-    "butterfly",
+    'butterfly',
+    'cat',
+    'chicken',
+    'cow',
+    'dog',
+    'elephant',
+    'horse',
+    'sheep',
+    'spider',
+    'squirrel'
 ]
 
 app = FastAPI()
 
 # title
 app = FastAPI(
-    title="Wildlife APi Inference",
+    title="Wildlife API Inference",
     description="""Obtain object value out of image
                     and return image and json result""",
     version="2025.1.01",
@@ -78,6 +78,7 @@ async def predict(file: UploadFile = File(...)):
     payload = {"instances": img_data}
     response = requests.post(URL, json=payload)
     result = response.json()
+    print('payload', result)
     raw_predictions = result.get("predictions")[0]
     max_index = int(np.argmax(raw_predictions))
 
