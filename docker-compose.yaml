@@ -24,7 +24,7 @@ services:
     ports:
       - "8501:8501"
     volumes:
-      - ./saved_model_1:/models/wildlife_computer_vision/1
+      - ./saved_model:/models/wildlife_computer_vision/1
       - ./models_config:/models_config
     environment:
       - MODEL_NAME=wildlife_computer_vision

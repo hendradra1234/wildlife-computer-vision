@@ -35,10 +35,6 @@ app = FastAPI(
     version="2025.1.01",
 )
 
-# This function is needed if you want to allow client requests 
-# from specific domains (specified in the origins argument) 
-# to access resources from the FastAPI server, 
-# and the client and server are hosted on different domains.
 origins = [
     "http://localhost",
     "http://localhost:8008",
